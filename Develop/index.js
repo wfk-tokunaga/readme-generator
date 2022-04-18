@@ -142,11 +142,10 @@ const questions = [{
 
 ];
 
-
 const collaboratorQuestions = [{
         type: 'input',
         name: 'collaboratorName',
-        message: 'Name of collaborator:',
+        message: 'Name of collaborator (Required)',
         validate: collaboratorName => {
             if (collaboratorName) {
                 return true;
@@ -158,17 +157,13 @@ const collaboratorQuestions = [{
     },
     {
         type: 'confirm',
-        name: 'includeAnotherCollaborator',
+        name: 'another',
         message: 'Include another collaborator?',
         default: false
     },
 ]
 
-// TODO: Create a function to write README file
 function writeToFile(fileName, data) {
-    // Takes the input we get from prompt and then write it to the file
-    // Gonna wanna format the file a bit with the markup stuff from GitHub
-    // I think this will use the generateMarkdown.js file to actually populate the README
     return new Promise((resolve, reject) => {
         fs.writeFile(`./${fileName}`, data, err => {
             if (err) {
@@ -183,37 +178,40 @@ function writeToFile(fileName, data) {
     });
 }
 
-// TODO: Create a function to initialize app
-function init() {
-    // This is probably what actually does the prompts
-    // Passes the data from the prompts to the writeToFile method
-    inquirer.prompt(questions)
-        .then(answers => {
-            console.log(answers);
-            writeToFile('README.md', generateMarkdown(answers));
+const promptCollaborators = (projectData) => {
+    if (!projectData.credits) {
+        projectData.credits = [];
+    }
+
+    console.log(`
+
+    =====================
+     Add a Collaborator!
+    =====================
+
+    `);
+    return inquirer.prompt(collaboratorQuestions)
+        .then(collaboratorData => {
+            projectData.credits.push(collaboratorData.collaboratorName);
+            return collaboratorData.another ? promptCollaborators(projectData) : projectData;
         });
 }
 
-// inquirer.prompt([{
-//         type: 'input',
-//         name: 'test',
-//         message: 'PLease Work?',
-//         validate: (test) => {
-//             if (test) {
-//                 console.log(test);
-//                 return true;
-//             } else {
-//                 console.log("MUST TEST");
-//                 return false;
-//             }
-//         }
-//     },
-//     {
-//         type: 'input',
-//         name: 'test2',
-//         message: 'PLease WOrk NOWWW?',
-//     }
-// ]).then(answer => console.log(answer));
+// let projectData = {};
+// promptCollaborators(projectData).then(res => { console.log(res) });
+
+function init() {
+    // Passes the data from the prompts to the writeToFile method
+    inquirer.prompt(questions)
+        .then(answers => {
+            if (answers.includeCollaborators) {
+                promptCollaborators(answers)
+                    .then(response => writeToFile('README.md', generateMarkdown(response)));
+            } else {
+                writeToFile('README.md', generateMarkdown(answers));
+            }
+        });
+}
 
 // Function call to initialize app
 init();

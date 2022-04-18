@@ -55,47 +55,58 @@ function renderLicenseSection(license) {
     }
 }
 
+
+function renderCreditsSection(credits) {
+    if (credits === "None") {
+        return "";
+    } else {
+        return `
+    ## Credits
+    
+    ${credits}
+    `
+    }
+}
+
+
 // TODO: Create a function to generate markdown for README
 // This does most of the heavy lifting for the template
 function generateMarkdown(data) {
     const markdown =
         `# ${data.title}
     
-    ## Table of Contents (Optional)
-    
-    If your README is long, add a table of contents to make it easy for users to find what they need.
-    - [Description](#description)
-    - [Installation](#installation)
-    - [Usage](#usage)
-    - [Credits](#credits)
-    - [License](#license)
-    - [Additional Info](#additional-info)
-    
-    ## Description
+## Table of Contents
 
-    ${data.description}
+- [Description](#description)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Credits](#credits)
+- [License](#license)
+- [Additional Info](#additional-info)
 
-    ## Installation
+## Description
 
-    ${data.installation}
+${data.description}
 
-    ## Usage
+## Installation
 
-    ${data.usage}
+${data.installation}
 
-    ## Credits
+## Usage
 
-    ${data.credits}
+${data.usage}
 
-    ## License
+${renderCreditsSection(data.credits)}
 
-    ${renderLicenseSection(data.license)}
+## License
 
-    ---
+${renderLicenseSection(data.license)}
 
-    ## Additional Info:
-    - Github: [${data.authorGit}](https://github.com/${data.authorGit})
-  ; `
+---
+
+## Additional Info:
+- Github: [${data.authorGit}](https://github.com/${data.authorGit})
+; `
     return markdown
 }
 
