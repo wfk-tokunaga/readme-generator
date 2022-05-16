@@ -15,7 +15,7 @@ function renderLicenseBadge(license) {
         case 'GNU-General-Public':
             return `[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)`;
         case 'None':
-            return ``;
+            return `None`;
     }
 }
 
@@ -37,7 +37,7 @@ function renderLicenseLink(license) {
         case 'GNU-General-Public':
             return `(https://www.gnu.org/licenses/gpl-3.0)`;
         case 'None':
-            return ``;
+            return `None`;
     }
 }
 
@@ -85,28 +85,24 @@ function generateMarkdown(data) {
 - [Additional Info](#additional-info)
 
 ## Description
-
 ${data.description}
 
 ## Installation
-
 ${data.installation}
 
 ## Usage
-
 ${data.usage}
 
 ${renderCreditsSection(data.credits)}
 
 ## License
-
 ${renderLicenseSection(data.license)}
 
 ---
 
 ## Additional Info:
 - Github: [${data.authorGit}](https://github.com/${data.authorGit})
-; `
+`
     return markdown
 }
 
