@@ -12,8 +12,7 @@
 ## Description
 README Generator is a command line interface that allows users to create professional README files by answering a series of prompts. This program uses the Node.js package Inquirer.
 
-## Video Guides
-### Video Example 1 of 2:
+## Video Guide
 https://drive.google.com/file/d/1gvaxOU19CfRlSh9ew76FEo9cPNdVpOjP/view 
 
 
